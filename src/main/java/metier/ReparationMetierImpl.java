@@ -83,16 +83,14 @@ public class ReparationMetierImpl implements IReparationMetier {
         if (reparateur == null) {
             throw new ReparationException("Réparateur requis pour créer une réparation");
         }
-        
         EntityManager em = dao.getEntityManager();
         EntityTransaction tx = em.getTransaction();
         try {
-            tx.begin();
-            
+            tx.begin();   
             // Récupérer les entités managées
             Client clientManaged = em.find(Client.class, client.getIdClient());
             Reparateur reparateurManaged = em.find(Reparateur.class, reparateur.getId());
-            
+         
             if (clientManaged == null) {
                 throw new ReparationException("Client introuvable (ID: " + client.getIdClient() + ")");
             }

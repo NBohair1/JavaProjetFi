@@ -128,23 +128,23 @@ public class MainFrame extends JFrame {
 
         // === Mes activités personnelles (IDENTIQUE à ReparateurFrame) ===
         mesReparationsPanel = new ReparationPanelReparateur(this);
-        tabbedPane.addTab(" 🔧 Mes Réparations ", mesReparationsPanel);
+        tabbedPane.addTab("  Mes Réparations ", mesReparationsPanel);
         
         mesClientsPanel = new ClientPanelReparateur(this);
-        tabbedPane.addTab(" 👤 Clients ", mesClientsPanel);
+        tabbedPane.addTab("  Clients ", mesClientsPanel);
         
         mesComposantsPanel = new ComposantPanelReparateur(this);
-        tabbedPane.addTab(" 🔩 Composants ", mesComposantsPanel);
+        tabbedPane.addTab("  Composants ", mesComposantsPanel);
         
         maCaissePanel = new CaissePanelReparateur(this);
-        tabbedPane.addTab(" 💰 Ma Caisse ", maCaissePanel);
+        tabbedPane.addTab("  Ma Caisse ", maCaissePanel);
         
         JPanel mesEmpruntsPanel = createEmpruntPanel();
-        tabbedPane.addTab(" 💳 Mes Emprunts ", mesEmpruntsPanel);
+        tabbedPane.addTab("  Mes Emprunts ", mesEmpruntsPanel);
 
         // === Onglets supplémentaires pour le PROPRIO ===
         adminPanel = new AdminPanel(this);
-        tabbedPane.addTab(" ⚙️ Gestion Globale ", adminPanel);
+        tabbedPane.addTab("  Gestion Globale ", adminPanel);
 
         add(tabbedPane, BorderLayout.CENTER);
     }
@@ -477,6 +477,6 @@ public class MainFrame extends JFrame {
                     e.printStackTrace();
                 }
             }
-        });
-    }
+        });   
+    } 
 }

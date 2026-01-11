@@ -2,6 +2,7 @@ package presentation;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -33,7 +34,7 @@ public class DataSimulation {
 
             // Vérifier si les données existent déjà
             Long count = em.createQuery("SELECT COUNT(p) FROM Proprietaire p WHERE p.email = :email", Long.class)
-                    .setParameter("email", "admin@gmail.com")
+                    .setParameter("email", "admin@repairshop.ma")
                     .getSingleResult();
             
             if (count > 0) {
@@ -52,7 +53,7 @@ public class DataSimulation {
             Proprietaire proprietaire = new Proprietaire();
             proprietaire.setNom("Alami");
             proprietaire.setPrenom("Hassan");
-            proprietaire.setEmail("admin@gmail.com");
+            proprietaire.setEmail("admin@repairshop.ma");
             proprietaire.setMdp("admin123");
             proprietaire.setPourcentageGain(100f);
             
@@ -62,7 +63,7 @@ public class DataSimulation {
             em.persist(caisseProprietaire);
             proprietaire.setCaisse(caisseProprietaire);
             em.persist(proprietaire);
-            System.out.println("   ✓ Propriétaire: admin@gmail.com (mdp: admin123)");
+            System.out.println("   ✓ Propriétaire: admin@repairshop.ma (mdp: admin123)");
 
             // ═══════════════════════════════════════════════════════════════
             // 2. BOUTIQUES (2)
@@ -70,8 +71,8 @@ public class DataSimulation {
             System.out.println("\n📌 Création des boutiques...");
             
             Boutique boutique1 = new Boutique();
-            boutique1.setNom("RepairShop Casablanca Centre");
-            boutique1.setAdresse("123 Boulevard Mohammed V, Casablanca");
+            boutique1.setNom("RepairShop1");
+            boutique1.setAdresse("MA7AL1, Rabat");
             boutique1.setNumTelephone("0522-123456");
             boutique1.setNumP("PAT-2024-001");
             boutique1.setProprietaire(proprietaire);
@@ -79,8 +80,8 @@ public class DataSimulation {
             System.out.println("   ✓ Boutique 1: " + boutique1.getNom());
 
             Boutique boutique2 = new Boutique();
-            boutique2.setNom("RepairShop Maarif");
-            boutique2.setAdresse("45 Rue Zerktouni, Casablanca");
+            boutique2.setNom("RepairShop2");
+            boutique2.setAdresse("MA7AL, Rabat");
             boutique2.setNumTelephone("0522-654321");
             boutique2.setNumP("PAT-2024-002");
             boutique2.setProprietaire(proprietaire);
@@ -93,20 +94,20 @@ public class DataSimulation {
             System.out.println("\n📌 Création des réparateurs...");
             
             // Réparateur 1 - Boutique 1
-            Reparateur rep1 = creerReparateur(em, "Bennani", "Ahmed", "ahmed@repairshop.ma", "rep123", 15f, boutique1, 3500f);
-            System.out.println("   ✓ Réparateur 1: ahmed@repairshop.ma (15% gain)");
+            Reparateur rep1 = creerReparateur(em, "Bohair", "Nabil", "Nabil@repairshop.ma", "rep123", 15f, boutique1, 3500f);
+            System.out.println("   ✓ Réparateur 1: Nabil@repairshop.ma (15% gain)");
             
             // Réparateur 2 - Boutique 1
-            Reparateur rep2 = creerReparateur(em, "El Idrissi", "Fatima", "fatima@repairshop.ma", "rep123", 20f, boutique1, 4200f);
-            System.out.println("   ✓ Réparateur 2: fatima@repairshop.ma (20% gain)");
+            Reparateur rep2 = creerReparateur(em, "Hadraoui", "Wiame", "Wiame@repairshop.ma", "rep123", 20f, boutique1, 4200f);
+            System.out.println("   ✓ Réparateur 2: Wiame@repairshop.ma (20% gain)");
             
             // Réparateur 3 - Boutique 2
-            Reparateur rep3 = creerReparateur(em, "Tazi", "Karim", "karim@repairshop.ma", "rep123", 18f, boutique2, 2800f);
+            Reparateur rep3 = creerReparateur(em, "Alla", "Karim", "karim@repairshop.ma", "rep123", 18f, boutique2, 2800f);
             System.out.println("   ✓ Réparateur 3: karim@repairshop.ma (18% gain)");
             
             // Réparateur 4 - Boutique 2
-            Reparateur rep4 = creerReparateur(em, "Hassani", "Sara", "sara@repairshop.ma", "rep123", 22f, boutique2, 3100f);
-            System.out.println("   ✓ Réparateur 4: sara@repairshop.ma (22% gain)");
+            Reparateur rep4 = creerReparateur(em, "Bouroumi", "Anass", "Anass@repairshop.ma", "rep123", 22f, boutique2, 3100f);
+            System.out.println("   ✓ Réparateur 4: Anass@repairshop.ma (22% gain)");
 
             Reparateur[] reparateurs = {rep1, rep2, rep3, rep4};
 
@@ -503,15 +504,10 @@ public class DataSimulation {
         System.out.println("│            COMPTES DE TEST DISPONIBLES              │");
         System.out.println("├─────────────────────────────────────────────────────┤");
         System.out.println("│ 👑 PROPRIÉTAIRE (Admin complet):                    │");
-        System.out.println("│    Email: admin@gmail.com                           │");
+        System.out.println("│    Email: admin@repairshop.ma                       │");
         System.out.println("│    Mot de passe: admin123                           │");
         System.out.println("├─────────────────────────────────────────────────────┤");
         System.out.println("│ 🔧 RÉPARATEURS:                                     │");
-        System.out.println("│    ahmed@repairshop.ma   (mdp: rep123) - 15% gain   │");
-        System.out.println("│    fatima@repairshop.ma  (mdp: rep123) - 20% gain   │");
-        System.out.println("│    karim@repairshop.ma   (mdp: rep123) - 18% gain   │");
-        System.out.println("│    sara@repairshop.ma    (mdp: rep123) - 22% gain   │");
-        System.out.println("└─────────────────────────────────────────────────────┘");
     }
     
     private static void afficherStatistiques() {

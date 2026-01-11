@@ -329,7 +329,7 @@ public class AdminPanel extends JPanel {
                 for (dao.Reparateur rep : reparateurs) {
                     java.util.List<dao.Emprunt> emprunts = empruntMetier.listerEmpruntsParReparateur(rep);
                     for (dao.Emprunt emp : emprunts) {
-                        String etat = emp.isRembourse() ? "✓ Remboursé" : "⏳ En cours";
+                        String etat = emp.isRembourse() ? " Remboursé" : " En cours";
                         String repNom = rep.getPrenom() + " " + rep.getNom();
                         
                         model.addRow(new Object[]{
@@ -566,14 +566,14 @@ public class AdminPanel extends JPanel {
                 }
                 
                 sb.append("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n");
-                sb.append("👤 Réparateur: ").append(repNom).append("\n");
-                sb.append("💰 Solde Caisse: ").append(String.format("%.2f DH", caisse.getSoldeActuel())).append("\n\n");
+                sb.append(" Réparateur: ").append(repNom).append("\n");
+                sb.append(" Solde Caisse: ").append(String.format("%.2f DH", caisse.getSoldeActuel())).append("\n\n");
                 
                 // Lister les réparations de ce réparateur
                 if (rep != null) {
                     try {
                         java.util.List<dao.Reparation> reparations = reparationMetier.listerReparationsParReparateur(rep);
-                        sb.append("   🔧 Réparations (").append(reparations.size()).append("):\n");
+                        sb.append("    Réparations (").append(reparations.size()).append("):\n");
                         
                         for (dao.Reparation reparation : reparations) {
                             sb.append("      • ").append(reparation.getCodeSuivi())
@@ -1040,7 +1040,7 @@ public class AdminPanel extends JPanel {
                             float nouveauPourcentage = Float.parseFloat(input);
                             boutiqueMetier.modifierPourcentageGain(reparateur, nouveauPourcentage);
                             JOptionPane.showMessageDialog(dialog, "Pourcentage modifié avec succès !");
-                            loadData.run(); // Recharger
+                            loadData.run(); 
                         }
                     }
                 } catch (Exception ex) {
@@ -1088,7 +1088,7 @@ public class AdminPanel extends JPanel {
                             
                             boutiqueMetier.modifierReparateur(reparateur);
                             JOptionPane.showMessageDialog(dialog, "Informations modifiées avec succès !");
-                            loadData.run(); // Recharger
+                            loadData.run(); 
                         }
                     }
                 } catch (Exception ex) {
@@ -1125,7 +1125,7 @@ public class AdminPanel extends JPanel {
             
             StringBuilder sb = new StringBuilder();
             sb.append("=== STATISTIQUES FINANCIÈRES ===\n");
-            sb.append("🏪 Boutique : ").append(boutiqueActuelle.getNom()).append("\n\n");
+            sb.append(" Boutique : ").append(boutiqueActuelle.getNom()).append("\n\n");
             
             float revenuTotalBoutique = 0;
             float totalCaissesBoutique = 0;
@@ -1146,22 +1146,22 @@ public class AdminPanel extends JPanel {
                     totalCaissesBoutique += caisseRep;
                     totalReparations += nbReparations;
                     
-                    sb.append("\n👤 ").append(rep.getPrenom()).append(" ").append(rep.getNom()).append("\n");
-                    sb.append("   💵 Revenu Total : ").append(String.format("%.2f DH", revenuRep)).append("\n");
-                    sb.append("   🏦 Caisse : ").append(String.format("%.2f DH", caisseRep)).append("\n");
-                    sb.append("   💰 Caisse Réelle : ").append(String.format("%.2f DH", statsCaisse.getCaisseReelle())).append("\n");
-                    sb.append("   📊 % Gain : ").append(String.format("%.1f%%", rep.getPourcentageGain())).append("\n");
-                    sb.append("   🔧 Réparations : ").append(nbReparations).append("\n");
+                    sb.append("\n ").append(rep.getPrenom()).append(" ").append(rep.getNom()).append("\n");
+                    sb.append("    Revenu Total : ").append(String.format("%.2f DH", revenuRep)).append("\n");
+                    sb.append("    Caisse : ").append(String.format("%.2f DH", caisseRep)).append("\n");
+                    sb.append("    Caisse Réelle : ").append(String.format("%.2f DH", statsCaisse.getCaisseReelle())).append("\n");
+                    sb.append("    % Gain : ").append(String.format("%.1f%%", rep.getPourcentageGain())).append("\n");
+                    sb.append("    Réparations : ").append(nbReparations).append("\n");
                     
                 } catch (Exception e) {
-                    sb.append("\n👤 ").append(rep.getPrenom()).append(" ").append(rep.getNom()).append(" : Erreur de calcul\n");
+                    sb.append("\n ").append(rep.getPrenom()).append(" ").append(rep.getNom()).append(" : Erreur de calcul\n");
                 }
             }
             
             sb.append("\n\n=== TOTAUX BOUTIQUE ===\n");
-            sb.append("💰 Revenu Total : ").append(String.format("%.2f DH", revenuTotalBoutique)).append("\n");
-            sb.append("🏦 Total Caisses : ").append(String.format("%.2f DH", totalCaissesBoutique)).append("\n");
-            sb.append("🔧 Total Réparations : ").append(totalReparations).append("\n");
+            sb.append(" Revenu Total : ").append(String.format("%.2f DH", revenuTotalBoutique)).append("\n");
+            sb.append(" Total Caisses : ").append(String.format("%.2f DH", totalCaissesBoutique)).append("\n");
+            sb.append(" Total Réparations : ").append(totalReparations).append("\n");
             
             JTextArea textArea = new JTextArea(sb.toString());
             textArea.setEditable(false);

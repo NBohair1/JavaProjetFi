@@ -169,28 +169,28 @@ public class CaissePanelReparateur extends JPanel {
                 if (parentFrame instanceof MainFrame) {
                     // Vue PROPRIO : Afficher les deux caisses
                     donnees = new Object[][]{
-                        {"💰 Caisse", String.format("%.2f DH", stats.getCaisse())},
-                        {"💵 Caisse réelle", String.format("%.2f DH", stats.getCaisseReelle())},
-                        {"💳 Total emprunts actifs", String.format("%.2f DH", stats.getTotalEmprunts())},
-                        {"📝 Nombre emprunts actifs", String.valueOf(stats.getNombreEmpruntsActifs())},
+                        {" Caisse", String.format("%.2f DH", stats.getCaisse())},
+                        {" Caisse réelle", String.format("%.2f DH", stats.getCaisseReelle())},
+                        {" Total emprunts actifs", String.format("%.2f DH", stats.getTotalEmprunts())},
+                        {" Nombre emprunts actifs", String.valueOf(stats.getNombreEmpruntsActifs())},
                         {"", ""}, // Ligne vide pour séparer
-                        {"📈 Revenu total", String.format("%.2f DH", stats.getRevenuTotal())},
-                        {"📊 Revenus période (30j)", String.format("%.2f DH", stats.getRevenusPeriode())},
-                        {"✅ Réparations terminées", String.valueOf(stats.getNombreReparationsTerminees())},
-                        {"🔧 Total réparations", String.valueOf(stats.getNombreReparations())}
+                        {" Revenu total", String.format("%.2f DH", stats.getRevenuTotal())},
+                        {" Revenus période (30j)", String.format("%.2f DH", stats.getRevenusPeriode())},
+                        {" Réparations terminées", String.valueOf(stats.getNombreReparationsTerminees())},
+                        {" Total réparations", String.valueOf(stats.getNombreReparations())}
                     };
                 } else {
                     // Vue RÉPARATEUR : Afficher les deux caisses
                     donnees = new Object[][]{
-                        {"💰 Caisse", String.format("%.2f DH", stats.getCaisse())},
-                        {"💵 Caisse réelle", String.format("%.2f DH", stats.getCaisseReelle())},
-                        {"💳 Total emprunts actifs", String.format("%.2f DH", stats.getTotalEmprunts())},
-                        {"📝 Nombre emprunts actifs", String.valueOf(stats.getNombreEmpruntsActifs())},
+                        {" Caisse", String.format("%.2f DH", stats.getCaisse())},
+                        {" Caisse réelle", String.format("%.2f DH", stats.getCaisseReelle())},
+                        {" Total emprunts actifs", String.format("%.2f DH", stats.getTotalEmprunts())},
+                        {" Nombre emprunts actifs", String.valueOf(stats.getNombreEmpruntsActifs())},
                         {"", ""}, // Ligne vide pour séparer
-                        {"📈 Revenu total", String.format("%.2f DH", stats.getRevenuTotal())},
-                        {"📊 Revenus période (30j)", String.format("%.2f DH", stats.getRevenusPeriode())},
-                        {"✅ Réparations terminées", String.valueOf(stats.getNombreReparationsTerminees())},
-                        {"🔧 Total réparations", String.valueOf(stats.getNombreReparations())}
+                        {" Revenu total", String.format("%.2f DH", stats.getRevenuTotal())},
+                        {" Revenus période (30j)", String.format("%.2f DH", stats.getRevenusPeriode())},
+                        {" Réparations terminées", String.valueOf(stats.getNombreReparationsTerminees())},
+                        {" Total réparations", String.valueOf(stats.getNombreReparations())}
                     };
                 }
                 

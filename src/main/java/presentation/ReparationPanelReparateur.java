@@ -259,7 +259,7 @@ public class ReparationPanelReparateur extends JPanel {
                 options,
                 options[0]);
             
-            if (choix < 0) return; // Annulé
+            if (choix < 0) return; 
             
             Client client = null;
             

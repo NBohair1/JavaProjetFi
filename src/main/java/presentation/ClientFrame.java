@@ -147,19 +147,19 @@ public class ClientFrame extends JFrame {
         sb.append("État actuel:          ");
         switch (rep.getEtat()) {
             case "EN_ATTENTE":
-                sb.append("⏳ EN ATTENTE");
+                sb.append(" EN ATTENTE");
                 break;
             case "EN_COURS":
-                sb.append("🔧 EN COURS");
+                sb.append(" EN COURS");
                 break;
             case "TERMINEE":
-                sb.append("✓ TERMINÉE");
+                sb.append(" TERMINÉE");
                 break;
             case "LIVREE":
-                sb.append("✓ LIVRÉE");
+                sb.append(" LIVRÉE");
                 break;
             case "ANNULEE":
-                sb.append("✗ ANNULÉE");
+                sb.append(" ANNULÉE");
                 break;
             default:
                 sb.append(rep.getEtat());
