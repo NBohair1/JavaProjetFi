@@ -127,4 +127,28 @@ public class ComposantMetierImpl implements IComposantMetier {
             em.close();
         }
     }
+
+    @Override
+    public void utiliserComposant(Composant composant, int quantite) throws ComposantException {
+        EntityManager em = dao.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            
+            // Vérifier si la quantité est suffisante
+            if (composant.getQuantite() < quantite) {
+                throw new ComposantException("Quantité insuffisante du composant: " + composant.getNom());
+            }
+            
+            // Décrémenter la quantité
+            composant.setQuantite(composant.getQuantite() - quantite);
+            em.merge(composant);
+            tx.commit();
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw new ComposantException("Impossible d'utiliser le composant: " + e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
 }

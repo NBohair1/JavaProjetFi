@@ -519,7 +519,7 @@ public class DataSimulation {
         System.out.println("│  • 4 Réparateurs                                    │");
         System.out.println("│  • 12 Clients (6 fidèles)                           │");
         System.out.println("│  • 15 Composants                                    │");
-        System.out.println("│  • 20 Réparations:                                  │");
+        System.out.println("│  •  20 Réparations:                                  │");
         System.out.println("│      - 5 LIVREE (payées)                            │");
         System.out.println("│      - 5 TERMINEE (à récupérer)                     │");
         System.out.println("│      - 5 EN_COURS                                   │");

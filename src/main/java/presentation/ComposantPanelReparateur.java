@@ -6,7 +6,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import dao.Composant;
+import dao.Reparation;
 import exception.ComposantException;
+import exception.ReparationException;
 
 // Panel composants - Gestion stock pièces détachées
 public class ComposantPanelReparateur extends JPanel {
@@ -71,6 +73,16 @@ public class ComposantPanelReparateur extends JPanel {
         }
         return null;
     }
+    
+    // Méthode helper pour accéder au ReparationMetier
+    private metier.IReparationMetier getReparationMetier() {
+        if (parentFrame instanceof ReparateurFrame) {
+            return ((ReparateurFrame) parentFrame).getReparationMetier();
+        } else if (parentFrame instanceof MainFrame) {
+            return ((MainFrame) parentFrame).getReparationMetier();
+        }
+        return null;
+    }
 
     private void initComponents() {
         // Barre du haut
@@ -92,6 +104,10 @@ public class ComposantPanelReparateur extends JPanel {
         JButton btnDelete = new JButton("Supprimer");
         btnDelete.addActionListener(e -> supprimerComposant());
         topPanel.add(btnDelete);
+
+        JButton btnUse = new JButton("Utiliser");
+        btnUse.addActionListener(e -> utiliserComposantAction());
+        topPanel.add(btnUse);
 
         JButton btnRefresh = new JButton("Actualiser");
         btnRefresh.addActionListener(e -> loadComposants());
@@ -257,6 +273,94 @@ public class ComposantPanelReparateur extends JPanel {
             } catch (ComposantException e) {
                 JOptionPane.showMessageDialog(this, "Erreur: " + e.getMessage());
             }
+        }
+    }
+
+    private void utiliserComposantAction() {
+        int row = table.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Veuillez sélectionner un composant");
+            return;
+        }
+
+        try {
+            Long id = (Long) model.getValueAt(row, 0);
+            Composant c = getComposantMetier().chercherComposant(id);
+            
+            if (c == null) {
+                JOptionPane.showMessageDialog(this, "Composant non trouvé");
+                return;
+            }
+            
+            // Récupérer les réparations EN_COURS du réparateur
+            java.util.List<Reparation> reparations = getReparationMetier().listerReparationsParReparateur(getReparateur());
+            java.util.List<Reparation> reparationsEnCours = new java.util.ArrayList<>();
+            for (Reparation r : reparations) {
+                if ("EN_COURS".equals(r.getEtat())) {
+                    reparationsEnCours.add(r);
+                }
+            }
+            
+            if (reparationsEnCours.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Aucune réparation en cours. Veuillez d'abord démarrer une réparation.");
+                return;
+            }
+            
+            // Créer un JComboBox pour choisir la réparation
+            JComboBox<String> cmbReparation = new JComboBox<>();
+            for (Reparation r : reparationsEnCours) {
+                String label = r.getCodeSuivi() + " - " + (r.getClient() != null ? r.getClient().getNom() : "Sans client");
+                cmbReparation.addItem(label);
+            }
+            
+            JTextField txtQuantite = new JTextField("1");
+            
+            Object[] message = {
+                "Réparation:", cmbReparation,
+                "Composant:", c.getNom() + " (Stock: " + c.getQuantite() + ", Prix: " + c.getPrix() + " DH)",
+                "Quantité à utiliser:", txtQuantite
+            };
+
+            int option = JOptionPane.showConfirmDialog(this, message, "Utiliser Composant", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                int quantiteUtilisee = Integer.parseInt(txtQuantite.getText().trim());
+                
+                if (quantiteUtilisee <= 0) {
+                    JOptionPane.showMessageDialog(this, "La quantité doit être positive");
+                    return;
+                }
+                
+                if (quantiteUtilisee > c.getQuantite()) {
+                    JOptionPane.showMessageDialog(this, "Quantité insuffisante. Stock disponible: " + c.getQuantite());
+                    return;
+                }
+                
+                // Récupérer la réparation sélectionnée
+                int selectedIndex = cmbReparation.getSelectedIndex();
+                Reparation reparationChoisie = reparationsEnCours.get(selectedIndex);
+                
+                // Utiliser le composant (décrémente le stock)
+                getComposantMetier().utiliserComposant(c, quantiteUtilisee);
+                
+                // Ajouter le composant à la réparation (ajoute le prix)
+                for (int i = 0; i < quantiteUtilisee; i++) {
+                    getReparationMetier().ajouterComposant(reparationChoisie, c);
+                }
+                
+                float prixAjoute = c.getPrix() * quantiteUtilisee;
+                JOptionPane.showMessageDialog(this, 
+                    "Composant utilisé avec succès!\n" +
+                    "Quantité: " + quantiteUtilisee + "\n" +
+                    "Prix ajouté à la réparation: " + prixAjoute + " DH\n" +
+                    "Stock restant: " + (c.getQuantite() - quantiteUtilisee));
+                loadComposants();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Erreur: La quantité doit être un nombre entier");
+        } catch (ComposantException e) {
+            JOptionPane.showMessageDialog(this, "Erreur: " + e.getMessage());
+        } catch (ReparationException e) {
+            JOptionPane.showMessageDialog(this, "Erreur réparation: " + e.getMessage());
         }
     }
 }

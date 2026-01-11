@@ -28,4 +28,7 @@ public interface IComposantMetier {
     
     // Rechercher par nom
     List<Composant> chercherComposantsParNom(String nom) throws ComposantException;
+    
+    // Utiliser un composant (décrémenter la quantité)
+    void utiliserComposant(Composant composant, int quantite) throws ComposantException;
 }
