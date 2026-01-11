@@ -127,4 +127,45 @@ public class ComposantMetierImpl implements IComposantMetier {
             em.close();
         }
     }
+
+    @Override
+    public void utiliserComposant(Composant composant, int quantite) throws ComposantException {
+        if (composant == null) {
+            throw new ComposantException("Composant non spécifié");
+        }
+        
+        if (quantite <= 0) {
+            throw new ComposantException("La quantité doit être positive");
+        }
+        
+        if (composant.getQuantite() < quantite) {
+            throw new ComposantException("Stock insuffisant. Disponible: " + composant.getQuantite());
+        }
+        
+        EntityManager em = dao.getEntityManager();
+        EntityTransaction tx = em.getTransaction();
+        try {
+            tx.begin();
+            
+            // Récupérer le composant depuis la base de données
+            Composant c = em.find(Composant.class, composant.getIdComposant());
+            if (c == null) {
+                throw new ComposantException("Composant introuvable");
+            }
+            
+            // Décrémenter la quantité
+            c.setQuantite(c.getQuantite() - quantite);
+            em.merge(c);
+            
+            tx.commit();
+        } catch (ComposantException e) {
+            if (tx.isActive()) tx.rollback();
+            throw e;
+        } catch (Exception e) {
+            if (tx.isActive()) tx.rollback();
+            throw new ComposantException("Erreur lors de l'utilisation du composant: " + e.getMessage());
+        } finally {
+            em.close();
+        }
+    }
 }

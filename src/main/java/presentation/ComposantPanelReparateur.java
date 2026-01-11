@@ -90,6 +90,10 @@ public class ComposantPanelReparateur extends JPanel {
         btnDelete.addActionListener(e -> supprimerComposant());
         topPanel.add(btnDelete);
 
+        JButton btnUse = new JButton("Utiliser");
+        btnUse.addActionListener(e -> utiliserComposant());
+        topPanel.add(btnUse);
+
         JButton btnRefresh = new JButton("Actualiser");
         btnRefresh.addActionListener(e -> loadComposants());
         topPanel.add(btnRefresh);
@@ -254,6 +258,45 @@ public class ComposantPanelReparateur extends JPanel {
             } catch (ComposantException e) {
                 JOptionPane.showMessageDialog(this, "Erreur: " + e.getMessage());
             }
+        }
+    }
+
+    private void utiliserComposant() {
+        int row = table.getSelectedRow();
+        if (row < 0) {
+            JOptionPane.showMessageDialog(this, "Veuillez sélectionner un composant");
+            return;
+        }
+
+        try {
+            Long id = (Long) model.getValueAt(row, 0);
+            Composant c = getComposantMetier().chercherComposant(id);
+            
+            if (c.getQuantite() <= 0) {
+                JOptionPane.showMessageDialog(this, "Ce composant n'est plus en stock");
+                return;
+            }
+
+            JTextField txtQuantite = new JTextField("1");
+            
+            Object[] message = {
+                "Composant: " + c.getNom(),
+                "Stock disponible: " + c.getQuantite(),
+                "Quantité à utiliser:", txtQuantite
+            };
+
+            int option = JOptionPane.showConfirmDialog(this, message, "Utiliser Composant", JOptionPane.OK_CANCEL_OPTION);
+            if (option == JOptionPane.OK_OPTION) {
+                int quantite = Integer.parseInt(txtQuantite.getText().trim());
+                
+                getComposantMetier().utiliserComposant(c, quantite);
+                JOptionPane.showMessageDialog(this, "Composant utilisé avec succès. Stock mis à jour.");
+                loadComposants();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Erreur: La quantité doit être un nombre entier");
+        } catch (ComposantException e) {
+            JOptionPane.showMessageDialog(this, "Erreur: " + e.getMessage());
         }
     }
 }
